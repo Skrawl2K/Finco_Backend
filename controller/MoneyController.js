@@ -1,57 +1,91 @@
 import { insertTransaction, findAllTransaction, updateOneTransaction, removeTransaction } from "../models/TransactionDao.js";
 
 //! POST
-export const createTransaction = (req, res) => {
-    const {
-        topic,
-        text,
-        author,
-        topicCreationDate
-    } = req.body;
+//! original
+// export const createTransaction = (req, res) => {
+//     const {
+//         money,
+//         category,
+//          date,
+//          time
+//     } = req.body;
 
-    insertTransaction({
-        topic: req.body.topic,
-        text: req.body.text,
-        author: req.body.author,
-        // image: req.file.path,
-        topicCreationDate: new Date(topicCreationDate)
-    }).then((id) => {
+//     insertTransaction({
+//         money: req.body.money,
+//         category: req.body.category,
+//         date: req.body.date,
+//         time: req.body.time,
+//     }).then((id) => {
+//         console.log("Insert success");
+//         res.json({ id });
+//     }).catch((err) => {
+//         console.error(err);
+//         res.status(500).send("Error while fetching data");
+//     })
+// }
+
+//! new
+export const createTransaction = async (req, res) => {
+    console.log("request:", req.body);
+    try {
+        const { money, category, date, time } = req.body;
+        const id = await insertTransaction({ money, category, date, time });
         console.log("Insert success");
         res.json({ id });
-    }).catch((err) => {
-        console.error(err);
-        // 500 - Internal Server Error
+    } catch (error) {
+        console.error(error);
         res.status(500).send("Error while fetching data");
-    })
+    }
 }
+
+
 
 //! GET
-export const getTransaction = (_, res) => {
-    findAllTransaction()
-        .then((topics) => res.json(topics))
-        .catch((err) => {
-            console.error(err);
-            // 500 - Internal Server Error
-            res.status(500).send("Error while getting all topics");
-        })
+//! original
+// export const getTransaction = (_, res) => {
+//     findAllTransaction()
+//         .then((transaction) => res.json(transaction))
+//         .catch((err) => {
+//             console.error(err);
+//             res.status(500).send("Error while getting all transactions");
+//         })
+// }
+
+//! new
+export const getTransaction = async (_, res) => {
+    try {
+        const transaction = await findAllTransaction();
+        res.json(transaction);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error while getting all transactions");
+    }
 }
 
+
+
 //! PUT
-// /api/contact/:id
-export const updateTransaction = (req, res) => {
-    const id = req.params.id;
-    updateOneTransaction(id, req.body)
-        .then(() => {
-            res.status(200).send();
-        })
-        .catch(() => {
-            res.status(500).send("Error while updating a contact");
-        })
+export const updateTransaction = async (req, res) => {
+    try {
+        const id = req.body.id;
+        await updateOneTransaction(id, req.body);
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send("Error while updating a transaction");
+    }
 }
+
 
 
 //! DELETE
-export const deleteTransaction = () => {
-    return null;
+export const deleteTransaction = async (req, res) => {
+    try {
+        const id = req.body.id;
+        await deleteOneTransaction(id);
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send("Error while deleting a transaction");
+    }
 }
+
 

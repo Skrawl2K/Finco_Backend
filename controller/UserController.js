@@ -3,7 +3,7 @@ import { createToken } from '../util/db.js';
 
 
 //! USER-POST-LOGIN
-const login = async (req, res) => {
+export const login = async (req, res) => {
     const user = req.body
     const db = await getDb()
     const dbUser = await db.collection('user').findOne({ username: user.username })
@@ -18,7 +18,7 @@ const login = async (req, res) => {
 
 
 //! USER-PUT-SIGNUP
-const register = async (req, res) => {
+export const register = async (req, res) => {
     const user = req.body;
     const db = await getDb();
     const dbUser = await db.collection('user').findOne({ username: user.username });
@@ -29,7 +29,3 @@ const register = async (req, res) => {
 
 }
 
-export default {
-    login,
-    register
-}
