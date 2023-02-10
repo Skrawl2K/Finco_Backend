@@ -24,6 +24,7 @@ export const findAllTransaction = () => {
 }
 
 export const updateOneTransaction = (id, updateTransaction) => {
+    console.log(id);
     const filter = { "_id": mongodb.ObjectId(id) };
 
     const updateDoc = {
@@ -44,8 +45,13 @@ export const updateOneTransaction = (id, updateTransaction) => {
     });
 }
 
-export const removeTransaction = () => {
-    console.log("delete");
+export const deleteOneTransaction = async (id) => {
+    try {
+        await getDb()
+            .then((db) => db.collection("transaction").deleteOne({ "_id": mongodb.ObjectId(id) }));
+    } catch (err) {
+        throw err;
+    }
 }
 
 
