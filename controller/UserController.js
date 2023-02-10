@@ -2,7 +2,7 @@ import { getDb } from '../util/db';
 import { createToken } from '../util/db.js';
 
 
-//! USER-POST-LOGIN
+//! USER - LOGIN - POST  
 export const login = async (req, res) => {
     const user = req.body
     const db = await getDb()
@@ -17,7 +17,7 @@ export const login = async (req, res) => {
 }
 
 
-//! USER-PUT-SIGNUP
+//! USER - SIGNUP - POST
 export const register = async (req, res) => {
     const user = req.body;
     const db = await getDb();
