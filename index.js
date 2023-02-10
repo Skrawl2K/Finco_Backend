@@ -15,10 +15,11 @@ app.use('/public', express.static('./public'))
 
 //! CRUD -----------------------------------------------------------------------------------------------
 
-app.get('/api/topic', getTransaction)
-app.post('/api/topic', formToBody.single('image'), createTransaction);
-app.put('/api/topic', updateTransaction);
-app.delete('/api/topic', deleteTransaction); //!not in place
+app.get('/api/transaction', getTransaction)
+//! formToBody needs to be used in conjunction with multer to send form data correctly !//
+app.post('/api/transaction', formToBody.none(), createTransaction);
+app.put('/api/transaction', updateTransaction);
+app.delete('/api/transaction', deleteTransaction);
 
 
 app.listen(PORT, () => console.log("The server is running on port:", PORT))

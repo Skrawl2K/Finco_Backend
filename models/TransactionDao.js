@@ -1,10 +1,10 @@
 import { getDb } from "../util/db.js";
 import mongodb from "mongodb";
 
-export const insertTransaction = (Transaction) => {
+export const insertTransaction = (transaction) => {
     return new Promise((resolve, reject) => {
         getDb()
-            .then((db) => db.collection("transaction").insertOne(Transaction))
+            .then((db) => db.collection("transaction").insertOne(transaction))
             .then((result) => {
                 console.log("TransactionDao - insertTransaction result")
                 resolve(result.insertedId)
@@ -24,6 +24,7 @@ export const findAllTransaction = () => {
 }
 
 export const updateOneTransaction = (id, updateTransaction) => {
+    console.log(id);
     const filter = { "_id": mongodb.ObjectId(id) };
 
     const updateDoc = {
@@ -33,7 +34,7 @@ export const updateOneTransaction = (id, updateTransaction) => {
         getDb()
             .then((db) => {
                 console.log("Updating Transaction");
-                return db.collection("Finco").updateOne(filter, updateDoc)
+                return db.collection("transaction").updateOne(filter, updateDoc)
             })
             .then((result) => {
                 console.log("Updated Transaction");
@@ -44,8 +45,13 @@ export const updateOneTransaction = (id, updateTransaction) => {
     });
 }
 
-export const removeTransaction = () => {
-    console.log("delete");
+export const deleteOneTransaction = async (id) => {
+    try {
+        await getDb()
+            .then((db) => db.collection("transaction").deleteOne({ "_id": mongodb.ObjectId(id) }));
+    } catch (err) {
+        throw err;
+    }
 }
 
 
