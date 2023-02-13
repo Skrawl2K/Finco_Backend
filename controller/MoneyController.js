@@ -1,20 +1,21 @@
 import { insertTransaction, findAllTransaction, updateOneTransaction, deleteOneTransaction } from "../models/TransactionDao.js";
 
+
 //! POST
 //! original
 // export const createTransaction = (req, res) => {
 //     const {
-//         money,
-//         category,
-//          date,
-//          time
+//         transValue,
+//         transCategory,
+//          transDate,
+//          transTime
 //     } = req.body;
 
 //     insertTransaction({
-//         money: req.body.money,
-//         category: req.body.category,
-//         date: req.body.date,
-//         time: req.body.time,
+//         transValue: req.body.transValue,
+//         transCategory: req.body.transCategory,
+//         transDate: req.body.transDate,
+//         transTime: req.body.transTime,
 //     }).then((id) => {
 //         console.log("Insert success");
 //         res.json({ id });
@@ -28,8 +29,8 @@ import { insertTransaction, findAllTransaction, updateOneTransaction, deleteOneT
 export const createTransaction = async (req, res) => {
     console.log("request:", req.body);
     try {
-        const { money, category, date, time } = req.body;
-        const id = await insertTransaction({ money, category, date, time });
+        const { transID, transValue, transCategory, transDate, transTime } = req.body;
+        const id = await insertTransaction({ transID, transValue, transCategory, transDate, transTime });
         console.log("Insert success");
         res.json({ id });
     } catch (error) {
