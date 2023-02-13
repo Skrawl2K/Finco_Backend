@@ -1,20 +1,20 @@
-import { insertTransaction, findAllTransaction, updateOneTransaction, deleteOneTransaction } from "../models/TransactionDao.js";
+import { insertTransaction, findAllTransaction, uptransDateOneTransaction, deleteOneTransaction } from "../models/TransactionDao.js";
 
 //! POST
 //! original
 // export const createTransaction = (req, res) => {
 //     const {
-//         money,
-//         category,
-//          date,
-//          time
+//         transValue,
+//         transCategory,
+//          transDate,
+//          transTime
 //     } = req.body;
 
 //     insertTransaction({
-//         money: req.body.money,
-//         category: req.body.category,
-//         date: req.body.date,
-//         time: req.body.time,
+//         transValue: req.body.transValue,
+//         transCategory: req.body.transCategory,
+//         transDate: req.body.transDate,
+//         transTime: req.body.transTime,
 //     }).then((id) => {
 //         console.log("Insert success");
 //         res.json({ id });
@@ -28,8 +28,8 @@ import { insertTransaction, findAllTransaction, updateOneTransaction, deleteOneT
 export const createTransaction = async (req, res) => {
     console.log("request:", req.body);
     try {
-        const { money, category, date, time } = req.body;
-        const id = await insertTransaction({ money, category, date, time });
+        const { transID, transValue, transCategory, transDate, transTime } = req.body;
+        const id = await insertTransaction({ transID, transValue, transCategory, transDate, transTime });
         console.log("Insert success");
         res.json({ id });
     } catch (error) {
@@ -65,11 +65,11 @@ export const getTransaction = async (_, res) => {
 
 
 //! PUT (transport via application/json)
-export const updateTransaction = async (req, res) => {
+export const uptransDateTransaction = async (req, res) => {
     try {
         const id = req.body.id;
         console.log(req.body);
-        await updateOneTransaction(id, req.body);
+        await uptransDateOneTransaction(id, req.body);
         res.status(200).send();
     } catch (error) {
         res.status(500).send("Error while updating a transaction");
