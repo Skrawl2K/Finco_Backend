@@ -1,4 +1,5 @@
-import { insertTransaction, findAllTransaction, uptransDateOneTransaction, deleteOneTransaction } from "../models/TransactionDao.js";
+import { insertTransaction, findAllTransaction, updateOneTransaction, deleteOneTransaction } from "../models/TransactionDao.js";
+
 
 //! POST
 //! original
@@ -65,11 +66,11 @@ export const getTransaction = async (_, res) => {
 
 
 //! PUT (transport via application/json)
-export const uptransDateTransaction = async (req, res) => {
+export const updateTransaction = async (req, res) => {
     try {
         const id = req.body.id;
         console.log(req.body);
-        await uptransDateOneTransaction(id, req.body);
+        await updateOneTransaction(id, req.body);
         res.status(200).send();
     } catch (error) {
         res.status(500).send("Error while updating a transaction");
