@@ -58,18 +58,14 @@ export const register = async (req, res) => {
 
 //Test User: {"name":"Skrawl2K","email":"skrawl2k@bla.de", "password" : " BLARP1234"}
 
-export const baseUser = async (req, res) => {
-    const token = req.cookies.token
-    const db = await getDb()
+//! USER - EDIT - PUT (transport via application/json)
+export const edit = async (req, res) => {
     try {
-        const result = verifyToken(token)
-        console.log(result);
-        const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.user) }, { email: 1 })
-        res.status(200).json(dbUser)
-    } catch (err) {
-        console.error(err)
-        res.status(401).end()
+        const id = req.body.id;
+        console.log(req.body);
+        await updateOneTransaction(id, req.body);
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send("Error while updating a transaction");
     }
-
-
 }

@@ -29,7 +29,7 @@ app.delete('/api/transaction', deleteTransaction);
 app.post('/api/login', formToBody.none(), encrypt, login)
 app.post('/api/register', formToBody.none(), encrypt, register);
 // app.put('/api/edit', formToBody.none(), edit);
-// app.delete('/api/user', deleteTransaction);
+// app.delete('/api/delete', delete);
 
 
 app.listen(PORT, () => console.log("The server is running on port:", PORT))
