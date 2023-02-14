@@ -29,8 +29,11 @@ import { insertTransaction, findAllTransaction, updateOneTransaction, deleteOneT
 export const createTransaction = async (req, res) => {
     console.log("request:", req.body);
     try {
-        const { transID, transValue, transCategory, transDate, transTime } = req.body;
-        const id = await insertTransaction({ transID, transValue, transCategory, transDate, transTime });
+        //"transID" is for the filtering of "income" & "expense" entries in the MongoDB collection
+        //"transValue" is for the amount of money that is to be saved in the DB
+        //"transType" is for categorising income & expense
+        const { transID, transType, transValue, transCategory, transDate, transTime } = req.body;
+        const id = await insertTransaction({ transID, transType, transValue, transCategory, transDate, transTime });
         console.log("Insert success");
         res.json({ id });
     } catch (error) {

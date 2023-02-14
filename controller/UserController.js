@@ -1,5 +1,6 @@
 import { getDb } from '../util/db.js';
 import { ObjectId } from "mongodb"
+import jwt from 'jsonwebtoken'
 import { createToken, verifyToken } from '../util/token.js';
 
 
@@ -10,7 +11,7 @@ const cookieConfig = {
 }
 
 //! USER - LOGIN - POST  
-export const login = async (req, res) => {
+export const loginUser = async (req, res) => {
     const user = req.body
     const db = await getDb()
     const dbUser = await db.collection('user').findOne({ email: user.email })
@@ -25,23 +26,7 @@ export const login = async (req, res) => {
 }
 
 //! USER - SIGNUP - POST
-//! original
-// export const register = async (req, res) => {
-//     const user = req.body;
-//     const db = await getDb();
-
-//     const dbUser = await db.collection('user').findOne({ username: user.username });
-
-//     console.log(dbUser);
-//     if (dbUser !== null) res.status(401).end();
-//     encrypt(user.password)
-//     const result = await db.collection('user').insertOne(user);
-//     res.json(result);
-
-// }
-
-//! new
-export const register = async (req, res) => {
+export const registerUser = async (req, res) => {
     const user = {
         name: req.body.name,
         email: req.body.email,
@@ -59,13 +44,43 @@ export const register = async (req, res) => {
 //Test User: {"name":"Skrawl2K","email":"skrawl2k@bla.de", "password" : " BLARP1234"}
 
 //! USER - EDIT - PUT (transport via application/json)
-export const edit = async (req, res) => {
-    try {
-        const id = req.body.id;
-        console.log(req.body);
-        await updateOneTransaction(id, req.body);
-        res.status(200).send();
-    } catch (error) {
-        res.status(500).send("Error while updating a transaction");
+export const editUser = async (req, res) => {
+    const email = req.body.email;
+    const name = req.body.name;
+    const password = req.body.password;
+
+    console.log("log entry:", req.body);
+
+    const userInfo = {
+        name: name,
+        email: email,
+        password: password
+    };
+
+    const db = await getDb();
+    const dbUser = await db.collection('user').findOne({ email: req.body.email });
+    if (dbUser !== null) {
+        const result = await db.collection('user').updateOne(
+            { _id: ObjectId(dbUser._id) },
+            { $set: userInfo });
+        res.json(result);
+    }
+    else {
+        res.status(401).end();
+
+    }
+}
+
+//! USER - DELETE - DELETE (transport via application/json)
+export const deleteUser = async (req, res) => {
+    const email = req.body.email;
+    const db = await getDb();
+    const dbUser = await db.collection('user').findOne({ email: req.body.email });
+    if (dbUser !== null) {
+        const result = await db.collection('user').deleteOne({ _id: ObjectId(dbUser._id) });
+        res.json(result);
+    }
+    else {
+        res.status(401).end();
     }
 }

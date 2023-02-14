@@ -2,9 +2,10 @@ import express from 'express'
 import multer from 'multer'
 import morgan from 'morgan'
 import cors from 'cors'
-import { getTransaction, createTransaction, updateTransaction, deleteTransaction } from './controller/MoneyController.js'
-import { login, register } from './controller/UserController.js'
 import { encrypt } from './middleware/auth.js'
+import { getTransaction, createTransaction, updateTransaction, deleteTransaction } from './controller/MoneyController.js'
+import { loginUser, registerUser, editUser, deleteUser } from './controller/UserController.js'
+
 
 const PORT = process.env.PORT
 const app = express()
@@ -15,21 +16,21 @@ app.use(express.json())
 app.use('/public', express.static('./public'))
 
 
-//! Topic - CRUD -------------------------------------------------------------------------------------------
+//! Topic - CRUD -------------------------------------------------------------------------------------
 
 app.get('/api/transaction', getTransaction)
-//! formToBody needs to be used in conjunction with multer to send form data correctly !//
+//! formToBody needs to be used in conjunction with multer to send form data correctly
 app.post('/api/transaction', formToBody.none(), createTransaction);
 app.put('/api/transaction', updateTransaction);
 app.delete('/api/transaction', deleteTransaction);
 
 
-//! User - CRUD -------------------------------------------------------------------------------------------
+//! User - CRUD -------------------------------------------------------------------------------------
 
-app.post('/api/login', formToBody.none(), encrypt, login)
-app.post('/api/register', formToBody.none(), encrypt, register);
-// app.put('/api/edit', formToBody.none(), edit);
-// app.delete('/api/delete', delete);
+app.post('/api/login', formToBody.none(), encrypt, loginUser)
+app.post('/api/register', formToBody.none(), encrypt, registerUser);
+app.put('/api/edit', encrypt, editUser);
+app.delete('/api/delete', deleteUser);
 
 
 app.listen(PORT, () => console.log("The server is running on port:", PORT))
