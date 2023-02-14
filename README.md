@@ -6,4 +6,5 @@ NPM Packeges that are required for development:
 - multer
 - dotenv
 - cors
+- jsonwebtoken
 
