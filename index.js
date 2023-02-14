@@ -3,7 +3,8 @@ import multer from 'multer'
 import morgan from 'morgan'
 import cors from 'cors'
 import { getTransaction, createTransaction, updateTransaction, deleteTransaction } from './controller/MoneyController.js'
-// import { login, register } from './controller/UserController.js'
+import { login, register } from './controller/UserController.js'
+import { encrypt } from './middleware/auth.js'
 
 const PORT = process.env.PORT
 const app = express()
@@ -14,7 +15,7 @@ app.use(express.json())
 app.use('/public', express.static('./public'))
 
 
-//! Topic - CRUD -----------------------------------------------------------------------------------------------
+//! Topic - CRUD -------------------------------------------------------------------------------------------
 
 app.get('/api/transaction', getTransaction)
 //! formToBody needs to be used in conjunction with multer to send form data correctly !//
@@ -23,11 +24,11 @@ app.put('/api/transaction', updateTransaction);
 app.delete('/api/transaction', deleteTransaction);
 
 
-//! User - CRUD -----------------------------------------------------------------------------------------------
+//! User - CRUD -------------------------------------------------------------------------------------------
 
-// app.post('/api/user', login)
-// app.post('/api/user', formToBody.none(), register);
-// app.put('/api/user', updateTransaction);
+app.post('/api/login', formToBody.none(), encrypt, login)
+app.post('/api/register', formToBody.none(), encrypt, register);
+// app.put('/api/edit', formToBody.none(), edit);
 // app.delete('/api/user', deleteTransaction);
 
 
