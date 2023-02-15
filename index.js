@@ -5,6 +5,7 @@ import cors from 'cors'
 import { encrypt } from './middleware/auth.js'
 import { getTransaction, createTransaction, updateTransaction, deleteTransaction } from './controller/MoneyController.js'
 import { loginUser, registerUser, editUser, deleteUser } from './controller/UserController.js'
+import { verifyToken } from './util/token.js'
 
 
 const PORT = process.env.PORT
@@ -27,10 +28,10 @@ app.delete('/api/transaction', deleteTransaction);
 
 //! User - CRUD -------------------------------------------------------------------------------------
 
-app.post('/api/login', formToBody.none(), encrypt, loginUser)
+app.post('/api/login', formToBody.none(), encrypt, verifyToken, loginUser)
 app.post('/api/register', formToBody.none(), encrypt, registerUser);
-app.put('/api/edit', encrypt, editUser);
-app.delete('/api/delete', deleteUser);
+app.put('/api/edit', encrypt, verifyToken, editUser);
+app.delete('/api/delete', verifyToken, deleteUser);
 
 
 app.listen(PORT, () => console.log("The server is running on port:", PORT))

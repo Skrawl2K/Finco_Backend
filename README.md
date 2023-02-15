@@ -7,4 +7,5 @@ NPM Packeges that are required for development:
 - dotenv
 - cors
 - jsonwebtoken
+- nodemailer
 

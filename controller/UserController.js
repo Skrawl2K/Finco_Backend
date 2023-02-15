@@ -1,8 +1,7 @@
 import { getDb } from '../util/db.js';
 import { ObjectId } from "mongodb"
-import jwt from 'jsonwebtoken'
 import { createToken, verifyToken } from '../util/token.js';
-
+import nodemailer from 'nodemailer';
 
 const cookieConfig = {
     httpOnly: true,
@@ -21,7 +20,15 @@ export const loginUser = async (req, res) => {
     else {
         const token = createToken(dbUser)
         res.cookie('token', token, cookieConfig)
-        res.status(200).end()
+
+        //Verify the Token 
+        const decoded = verifyToken(token)
+        if (decoded) {
+            res.status(200).end()
+        }
+        else {
+            res.status(401).end();
+        }
     }
 }
 
@@ -41,7 +48,52 @@ export const registerUser = async (req, res) => {
 
 }
 
-//Test User: {"name":"Skrawl2K","email":"skrawl2k@bla.de", "password" : " BLARP1234"}
+//! MAIL - VERIFICATION
+export const sendVerificationEmail = async (req, res) => {
+    const { email, name } = req.body;
+
+    let transporter = nodemailer.createTransport({
+        service: process.env.MAIL_SERVICE,
+        auth: {
+            user: process.env.MAIL_EMAIL,
+            pass: process.env.MAIL_PASSWORD
+        },
+    });
+
+    const verifyToken = crypto.randomBytes(20).toString('hex');
+    const verificationURL = `http://${req.headers.host}/users/verify?token=${verifyToken}`;
+
+    const mailHTML = `Hi ${name},<br/><br/> 
+  Please click on the link below to verify your email address: <br/><br/> 
+  <a href="${verificationURL}" target="_blank">Click Here to Verify</a><br/><br/> 
+  `;
+
+    let mailOptions = {
+        to: email,
+        subject: 'Please confirm your Email address',
+        html: mailHTML
+    };
+
+    await transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            res.status(403).end();
+        }
+        else {
+            console.log('Message %s sent: %s', info.messageId, info.response);
+            User.findOneAndUpdate({ email }, { $set: { verifyToken } }, { new: true, upsert: true }, (err, doc) => {
+                if (err) res.status(500).json(err);
+                else {
+                    res.status(200).json(doc);
+                }
+            });
+        }
+    });
+};
+
+//! TEST USER ____________________________________________________________
+//Test User: {"name":"Skrawl2K","email":"kimkevinkoslowski@gmail.com", "password" : " BLARP1234"}
+//!______________________________________________________________________
 
 //! USER - EDIT - PUT (transport via application/json)
 export const editUser = async (req, res) => {
