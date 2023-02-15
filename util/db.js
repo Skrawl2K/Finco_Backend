@@ -1,5 +1,4 @@
 import { MongoClient } from "mongodb"
-
 import '../config/config.js';
 
 const url = process.env.MONGO_URI;
