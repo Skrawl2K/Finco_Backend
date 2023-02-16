@@ -1,6 +1,6 @@
 import { getDb } from '../util/db.js';
 import { ObjectId } from "mongodb"
-// import { createToken, verifyToken } from '../util/token.js';
+import { createToken, verifyToken } from '../util/token.js';
 // import nodemailer from 'nodemailer';
 
 const cookieConfig = {
@@ -18,11 +18,11 @@ export const loginUser = async (req, res) => {
     if (dbUser === null || dbUser.password !== user.password)
         res.status(401).end()
     else {
-        //     const token = createToken(dbUser)
-        //     res.cookie('token', token, cookieConfig)
+        const token = createToken(dbUser)
+        res.cookie('token', token, cookieConfig)
 
-        //     //Verify the Token 
-        //     const decoded = verifyToken(token)
+        //Verify the Token 
+        const decoded = verifyToken(token)
         if (decoded) {
             res.status(200).end()
         }
