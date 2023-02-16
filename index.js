@@ -6,6 +6,7 @@ import { verifyToken } from './util/token.js'
 import { auth, encrypt } from './middleware/auth.js'
 import { loginUser, registerUser, editUser, deleteUser, baseUser } from './controller/UserController.js'
 import { getTransaction, createTransaction, updateTransaction, deleteTransaction } from './controller/MoneyController.js'
+import cookieParser from 'cookie-parser'
 
 
 
@@ -13,7 +14,7 @@ import { getTransaction, createTransaction, updateTransaction, deleteTransaction
 
 const PORT = process.env.PORT
 const app = express()
-app.use(cookieParser())
+app.use(cookieParser)
 const formToBody = multer({ dest: './public' })
 app.use(cors({
     origin: true,
