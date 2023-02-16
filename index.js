@@ -34,7 +34,7 @@ app.delete('/api/transaction', deleteTransaction, auth);
 
 
 //! User - CRUD -------------------------------------------------------------------------------------
-
+console.log("errorHunter");
 app.post('/api/login', formToBody.none(), encrypt, loginUser)
 app.post('/api/register', formToBody.none(), encrypt, registerUser);
 app.put('/api/edit', encrypt, verifyToken, editUser);
