@@ -18,19 +18,22 @@ export const loginUser = async (req, res) => {
     if (dbUser === null || dbUser.password !== user.password)
         res.status(401).end()
     else {
-        const token = createToken(dbUser)
+        const token = createToken(result)
         res.cookie('token', token, cookieConfig)
-
-        //Verify the Token 
-        const decoded = verifyToken(token)
-        if (decoded) {
-            res.status(200).end()
-        }
-        else {
-            res.status(401).end();
-        }
+        res.status(200).end()
     }
+
+    //! Possible source of the login error
+    // //Verify the Token 
+    // const decoded = verifyToken(token)
+    // if (decoded) {
+    //     res.status(200).end()
+    // }
+    // else {
+    //     res.status(401).end();
+    // }
 }
+
 
 //! USER - SIGNUP - POST
 export const registerUser = async (req, res) => {
@@ -137,4 +140,20 @@ export const deleteUser = async (req, res) => {
     else {
         res.status(401).end();
     }
+}
+
+
+export const baseUser = async (req, res) => {
+    const token = req.cookies.token
+    const db = await getDb()
+    try {
+        const result = verifyToken(token)
+        console.log(result);
+        const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.user) }, { email: 1 })
+        res.status(200).json(dbUser)
+    } catch (err) {
+        console.error(err)
+        res.status(401).end()
+    }
+
 }

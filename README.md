@@ -8,4 +8,4 @@ NPM Packeges that are required for development:
 - cors
 - jsonwebtoken
 - nodemailer
-
+- cookie-parser
