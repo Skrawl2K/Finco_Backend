@@ -92,7 +92,9 @@ export const sendVerificationEmail = async (req, res) => {
 };
 
 //! TEST USER ____________________________________________________________
-//Test User: {"name":"Skrawl2K","email":"kimkevinkoslowski@gmail.com", "password" : " BLARP1234"}
+//name: Skrawl2K
+//email: kimkevinkoslowski@gmail.com
+//password: BLARP1234
 //!______________________________________________________________________
 
 //! USER - EDIT - PUT (transport via application/json)
