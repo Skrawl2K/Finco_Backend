@@ -2,11 +2,11 @@ import express from 'express'
 import multer from 'multer'
 import morgan from 'morgan'
 import cors from 'cors'
-import { encrypt } from './middleware/auth.js'
+import { auth, encrypt } from './middleware/auth.js'
 import { getTransaction, createTransaction, updateTransaction, deleteTransaction } from './controller/MoneyController.js'
 import { loginUser, registerUser, editUser, deleteUser } from './controller/UserController.js'
-import { createToken, verifyToken } from './util/token.js'
-import { auth } from './middleware/auth.js'
+import { verifyToken } from './util/token.js'
+
 
 
 const PORT = process.env.PORT
@@ -14,7 +14,7 @@ const app = express()
 const formToBody = multer({ dest: './public' })
 app.use(cors({
     origin: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: true,
     credentials: true
 }))
 app.use(morgan('dev'))
