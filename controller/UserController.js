@@ -149,7 +149,12 @@ export const baseUser = async (req, res) => {
     try {
         const result = verifyToken(token)
         console.log(result);
-        const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.user) }, { email: 1 })
+        //! new----------------------------------------------------------------------------
+        const dbUser = await db.collection('user').findOne({ email: user.email })
+        console.log(dbUser);
+        //! old
+        // const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.user) }, { email: 1 })
+        //!--------------------------------------------------------------------------------
         res.status(200).json(dbUser)
     } catch (err) {
         console.error(err)
