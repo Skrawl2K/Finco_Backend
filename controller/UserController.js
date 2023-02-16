@@ -12,8 +12,9 @@ const cookieConfig = {
 //! USER - LOGIN - POST  
 export const loginUser = async (req, res) => {
     const user = req.body
+    console.log("Läuft!");
     const db = await getDb()
-    const dbUser = await db.collection('user').findOne({ email: req.body.email })
+    const dbUser = await db.collection('user').findOne({ email: user.email })
 
     if (dbUser === null || dbUser.password !== user.password)
         res.status(401).end()
