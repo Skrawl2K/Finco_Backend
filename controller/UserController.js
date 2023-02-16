@@ -13,7 +13,7 @@ const cookieConfig = {
 export const loginUser = async (req, res) => {
     const user = req.body
     const db = await getDb()
-    const dbUser = await db.collection('user').findOne({ email: user.email })
+    const dbUser = await db.collection('user').findOne({ email: req.body.email })
 
     if (dbUser === null || dbUser.password !== user.password)
         res.status(401).end()
@@ -150,7 +150,7 @@ export const baseUser = async (req, res) => {
         const result = verifyToken(token)
         console.log(result);
         //! new----------------------------------------------------------------------------
-        const dbUser = await db.collection('user').findOne({ email: user.email })
+        const dbUser = await db.collection('user').findOne({ email: req.body.email })
         console.log(dbUser);
         //! old
         // const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.user) }, { email: 1 })
