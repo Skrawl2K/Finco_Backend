@@ -20,7 +20,7 @@ app.use(express.json())
 app.use('/public', express.static('./public'))
 
 
-//! Topic - CRUD -------------------------------------------------------------------------------------
+//! Transaction - CRUD -------------------------------------------------------------------------------------
 
 app.get('/api/transaction', getTransaction)
 //! formToBody needs to be used in conjunction with multer to send form data correctly
@@ -31,8 +31,8 @@ app.delete('/api/transaction', deleteTransaction);
 
 //! User - CRUD -------------------------------------------------------------------------------------
 
-app.post('/api/login', formToBody.none(), encrypt, createToken, verifyToken, loginUser)
-app.post('/api/register', formToBody.none(), encrypt, createToken, registerUser);
+app.post('/api/login', formToBody.none(), encrypt, loginUser)
+app.post('/api/register', formToBody.none(), encrypt, registerUser);
 app.put('/api/edit', encrypt, verifyToken, editUser);
 app.delete('/api/delete', verifyToken, deleteUser);
 
