@@ -11,13 +11,6 @@ import { verifyToken } from './util/token.js'
 
 const PORT = process.env.PORT
 const app = express()
-//!-------------------------------------------------------------------------------------
-app.use(expressjwt({
-    secret: process.env.JWT_SECRET,
-}).unless({
-    path: ['/'] // Which routes should not be checked
-}))
-//!-------------------------------------------------------------------------------------
 const formToBody = multer({ dest: './public' })
 app.use(cors({
     origin: true,
