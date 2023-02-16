@@ -6,6 +6,7 @@ import { encrypt } from './middleware/auth.js'
 import { getTransaction, createTransaction, updateTransaction, deleteTransaction } from './controller/MoneyController.js'
 import { loginUser, registerUser, editUser, deleteUser } from './controller/UserController.js'
 import { createToken, verifyToken } from './util/token.js'
+import { auth } from './middleware/auth.js'
 
 
 const PORT = process.env.PORT
@@ -13,6 +14,7 @@ const app = express()
 const formToBody = multer({ dest: './public' })
 app.use(cors({
     origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }))
 app.use(morgan('dev'))
@@ -22,11 +24,11 @@ app.use('/public', express.static('./public'))
 
 //! Transaction - CRUD -------------------------------------------------------------------------------------
 
-app.get('/api/transaction', getTransaction)
+app.get('/api/transaction', auth, getTransaction)
 //! formToBody needs to be used in conjunction with multer to send form data correctly
-app.post('/api/transaction', formToBody.none(), createTransaction);
-app.put('/api/transaction', updateTransaction);
-app.delete('/api/transaction', deleteTransaction);
+app.post('/api/transaction', formToBody.none(), auth, createTransaction);
+app.put('/api/transaction', updateTransaction, auth);
+app.delete('/api/transaction', deleteTransaction, auth);
 
 
 //! User - CRUD -------------------------------------------------------------------------------------
