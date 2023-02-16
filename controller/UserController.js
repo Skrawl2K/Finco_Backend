@@ -4,7 +4,7 @@ import { createToken, verifyToken } from '../util/token.js';
 // import nodemailer from 'nodemailer';
 
 const cookieConfig = {
-    httpOnly: true,
+    httpOnly: false,
     sameSite: 'none',
     secure: true
 }
