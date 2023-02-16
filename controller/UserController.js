@@ -15,21 +15,21 @@ export const loginUser = async (req, res) => {
     const db = await getDb()
     const dbUser = await db.collection('user').findOne({ email: user.email })
 
-    // if (dbUser === null || dbUser.password !== user.password)
-    //     res.status(401).end()
-    // else {
-    //     const token = createToken(dbUser)
-    //     res.cookie('token', token, cookieConfig)
+    if (dbUser === null || dbUser.password !== user.password)
+        res.status(401).end()
+    else {
+        //     const token = createToken(dbUser)
+        //     res.cookie('token', token, cookieConfig)
 
-    //     //Verify the Token 
-    //     const decoded = verifyToken(token)
-    //     if (decoded) {
-    //         res.status(200).end()
-    //     }
-    //     else {
-    //         res.status(401).end();
-    //     }
-    // }
+        //     //Verify the Token 
+        //     const decoded = verifyToken(token)
+        if (decoded) {
+            res.status(200).end()
+        }
+        else {
+            res.status(401).end();
+        }
+    }
 }
 
 //! USER - SIGNUP - POST
