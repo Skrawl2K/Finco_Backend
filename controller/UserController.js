@@ -19,7 +19,7 @@ export const loginUser = async (req, res) => {
     if (dbUser === null || dbUser.password !== user.password)
         res.status(401).end()
     else {
-        const token = createToken(result)
+        const token = createToken(dbUser)
         res.cookie('token', token, cookieConfig)
         res.status(200).end()
     }

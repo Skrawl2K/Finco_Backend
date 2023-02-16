@@ -12,11 +12,11 @@ import { getTransaction, createTransaction, updateTransaction, deleteTransaction
 
 const PORT = process.env.PORT
 const app = express()
-app.use(cookieParser)
+app.use(cookieParser())
 const formToBody = multer({ dest: './public' })
 app.use(cors({
     origin: true,
-    methods: true,
+    // methods: true,
     credentials: true
 }))
 app.use(morgan('dev'))
