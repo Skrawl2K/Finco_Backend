@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 });
 
 // define the type of upload multer would be doing and pass in its destination, in our case, its a single file with the name photo
-const upload = multer({ storage: storage }).single("image");
+const upload = multer({ dest: './public' })
 
 app.use(cors({
     origin: true,
@@ -37,21 +37,17 @@ app.use('/public', express.static('./public'))
 //! Transaction - CRUD -------------------------------------------------------------------------------------
 
 app.get('/api/transaction', getTransaction)
+//! formToBody needs to be used in conjunction with multer to send form data correctly
+app.post('/api/transaction', formToBody.none(), createTransaction);
+app.put('/api/transaction', updateTransaction);
+app.delete('/api/transaction', deleteTransaction);
 
-app.post('/api/transaction', multer.single('image'), formToBody.buffer(), auth, createTransaction);
-app.put('/api/transaction', auth, updateTransaction);
-app.delete('/api/transaction', auth, deleteTransaction);
 
 
 //! User - CRUD -------------------------------------------------------------------------------------
 
 app.post('/api/login', formToBody.none(), encrypt, loginUser)
-app.post('/api/register', upload, formToBody.buffer(), encrypt, (req, res) => {
-    // add the buffer here
-    req.body.profilePicture = req.file.buffer;
-    registerUser(req, res);
-}, registerUser);
-
+app.post('/api/register', upload.single('image'), encrypt, registerUser);
 app.put('/api/edit', encrypt, verifyToken, editUser);
 app.delete('/api/delete', verifyToken, deleteUser);
 app.get('/api/user', baseUser, (req, res) => {

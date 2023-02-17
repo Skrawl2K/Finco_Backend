@@ -42,7 +42,8 @@ export const registerUser = async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        registeredAt: new Date()
+        registeredAt: new Date(),
+        image: req.file.path
     }
 
     const db = await getDb()
