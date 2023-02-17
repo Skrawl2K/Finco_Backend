@@ -39,11 +39,10 @@ app.use('/public', express.static('./public'))
 //! Transaction - CRUD -------------------------------------------------------------------------------------
 
 app.get('/api/transaction', getTransaction)
-
-app.post('/api/transaction', multer.single('image'), formToBody.buffer(), auth, createTransaction);
-app.put('/api/transaction', auth, updateTransaction);
-app.delete('/api/transaction', auth, deleteTransaction);
-
+//! formToBody needs to be used in conjunction with multer to send form data correctly
+app.post('/api/transaction', formToBody.none(), createTransaction);
+app.put('/api/transaction', updateTransaction);
+app.delete('/api/transaction', deleteTransaction);
 
 //! User - CRUD -------------------------------------------------------------------------------------
 
