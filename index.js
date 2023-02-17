@@ -2,6 +2,7 @@ import express from 'express'
 import multer from 'multer'
 import morgan from 'morgan'
 import cors from 'cors'
+import bodyParser from 'body-parser'
 import { verifyToken } from './util/token.js'
 import cookieParser from 'cookie-parser'
 import { auth, encrypt } from './middleware/auth.js'
@@ -10,8 +11,10 @@ import { getTransaction, createTransaction, updateTransaction, deleteTransaction
 
 
 
+
 const PORT = process.env.PORT
 const app = express()
+app.use(bodyParser.json())
 app.use(cookieParser())
 const formToBody = multer({ dest: './public' })
 app.use(cors({
@@ -39,7 +42,13 @@ app.post('/api/login', formToBody.none(), encrypt, loginUser)
 app.post('/api/register', formToBody.none(), encrypt, registerUser);
 app.put('/api/edit', encrypt, verifyToken, editUser);
 app.delete('/api/delete', verifyToken, deleteUser);
-app.get('/api/user', baseUser)
+app.get('/api/user', baseUser, (req, res) => {
+    // Do something with the parsed data
+    const data = req.body;
+
+    // Return a response accordingly 
+    res.json({ success: true });
+})
 
 
 app.listen(PORT, () => console.log("The server is running on port:", PORT))

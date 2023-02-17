@@ -151,8 +151,8 @@ export const baseUser = async (req, res) => {
         const result = verifyToken(token)
         console.log(result);
         //! new----------------------------------------------------------------------------
-        const dbUser = await db.collection('user').findOne({ email: req.body.email })
-        console.log(dbUser);
+        const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.email) });
+
         //! old
         // const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.user) }, { email: 1 })
         //!--------------------------------------------------------------------------------

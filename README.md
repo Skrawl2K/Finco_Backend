@@ -9,3 +9,4 @@ NPM Packeges that are required for development:
 - jsonwebtoken
 - nodemailer
 - cookie-parser
+- express-bodyparser
