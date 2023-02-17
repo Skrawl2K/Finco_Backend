@@ -16,7 +16,16 @@ const PORT = process.env.PORT
 const app = express()
 app.use(bodyParser.json())
 app.use(cookieParser())
-const formToBody = multer({ dest: './public' })
+const formToBody = multer()
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public")
+    },
+});
+
+// define the type of upload multer would be doing and pass in its destination, in our case, its a single file with the name photo
+const upload = multer({ storage: storage }).single("image");
+
 app.use(cors({
     origin: true,
     // methods: true,
@@ -30,23 +39,27 @@ app.use('/public', express.static('./public'))
 //! Transaction - CRUD -------------------------------------------------------------------------------------
 
 app.get('/api/transaction', getTransaction)
-//! formToBody needs to be used in conjunction with multer to send form data correctly
-app.post('/api/transaction', formToBody.none(), auth, createTransaction);
+
+app.post('/api/transaction', multer.single('image'), formToBody.buffer(), auth, createTransaction);
 app.put('/api/transaction', auth, updateTransaction);
 app.delete('/api/transaction', auth, deleteTransaction);
 
 
 //! User - CRUD -------------------------------------------------------------------------------------
-console.log("errorHunter");
+
 app.post('/api/login', formToBody.none(), encrypt, loginUser)
-app.post('/api/register', formToBody.none(), encrypt, registerUser);
+app.post('/api/register', multer.single('image'), formToBody.none(), encrypt, (req, res) => {
+    req.body.profilePicture = req.file.buffer;
+    registerUser(req, res);
+}, registerUser);
+
 app.put('/api/edit', encrypt, verifyToken, editUser);
 app.delete('/api/delete', verifyToken, deleteUser);
 app.get('/api/user', baseUser, (req, res) => {
     // Do something with the parsed data
     const data = req.body;
 
-    // Return a response accordingly 
+    // Return aresponse accordingly 
     res.json({ success: true });
 })
 

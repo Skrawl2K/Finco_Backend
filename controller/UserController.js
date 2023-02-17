@@ -143,19 +143,36 @@ export const deleteUser = async (req, res) => {
     }
 }
 
+//! WORKS______________________________
+// export const baseUser = async (req, res) => {
+//     const token = req.cookies.token
+//     const db = await getDb()
+//     try {
+//         const result = verifyToken(token)
+//         console.log(result);
 
+//         const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.email, result) });
+
+//         res.status(200).json(dbUser)
+//     } catch (err) {
+//         console.error(err)
+//         res.status(401).end()
+//     }
+// }
+//! TEST______________________________
 export const baseUser = async (req, res) => {
     const token = req.cookies.token
     const db = await getDb()
     try {
         const result = verifyToken(token)
         console.log(result);
-        //! new----------------------------------------------------------------------------
-        const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.email) });
 
-        //! old
-        // const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.user) }, { email: 1 })
-        //!--------------------------------------------------------------------------------
+        // Find the user in the database
+        const dbUser = await db.collection('user').findOne({ _id: new ObjectId(result.email, result.name) });
+
+        // Add the profile picture field to the user data
+        dbUser.profilePicture = `./public${dbUser.profilePictureFileName}`;
+
         res.status(200).json(dbUser)
     } catch (err) {
         console.error(err)

@@ -49,8 +49,12 @@ export const updateTransaction = async (req, res) => {
 
 //! DELETE (transport via application/json)
 export const deleteTransaction = async (req, res) => {
+    console.log("REQUEST ID!!!!!!", req.body.id);
     try {
-        const id = req.body.id;
+        // const id = req.body.id;
+        const id = req.params._id;
+
+
         await deleteOneTransaction(id);
         res.status(200).send();
     } catch (error) {
