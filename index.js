@@ -10,13 +10,11 @@ import { loginUser, registerUser, editUser, deleteUser, baseUser } from './contr
 import { getTransaction, createTransaction, updateTransaction, deleteTransaction } from './controller/MoneyController.js'
 
 
-
-
 const PORT = process.env.PORT
 const app = express()
 app.use(bodyParser.json())
 app.use(cookieParser())
-const formToBody = multer()
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "public")
@@ -39,15 +37,17 @@ app.use('/public', express.static('./public'))
 //! Transaction - CRUD -------------------------------------------------------------------------------------
 
 app.get('/api/transaction', getTransaction)
-//! formToBody needs to be used in conjunction with multer to send form data correctly
-app.post('/api/transaction', formToBody.none(), createTransaction);
-app.put('/api/transaction', updateTransaction);
-app.delete('/api/transaction', deleteTransaction);
+
+app.post('/api/transaction', multer.single('image'), formToBody.buffer(), auth, createTransaction);
+app.put('/api/transaction', auth, updateTransaction);
+app.delete('/api/transaction', auth, deleteTransaction);
+
 
 //! User - CRUD -------------------------------------------------------------------------------------
 
 app.post('/api/login', formToBody.none(), encrypt, loginUser)
-app.post('/api/register', multer.single('image'), formToBody.none(), encrypt, (req, res) => {
+app.post('/api/register', upload, formToBody.buffer(), encrypt, (req, res) => {
+    // add the buffer here
     req.body.profilePicture = req.file.buffer;
     registerUser(req, res);
 }, registerUser);
