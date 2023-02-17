@@ -14,7 +14,7 @@ const PORT = process.env.PORT
 const app = express()
 app.use(bodyParser.json())
 app.use(cookieParser())
-
+const formToBody = multer({ dest: './public' })
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "public")
