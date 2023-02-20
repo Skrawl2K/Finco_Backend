@@ -40,7 +40,7 @@ app.get('/api/transaction', getTransaction)
 //! formToBody needs to be used in conjunction with multer to send form data correctly
 app.post('/api/transaction', formToBody.none(), createTransaction);
 app.put('/api/transaction', updateTransaction);
-app.delete('/api/transaction', deleteTransaction);
+app.delete('/api/transaction/:_id', deleteTransaction);
 
 
 
