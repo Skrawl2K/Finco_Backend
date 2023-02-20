@@ -34,17 +34,17 @@ app.use(express.json())
 app.use('/public', express.static('./public'))
 
 
-//! Transaction - CRUD -------------------------------------------------------------------------------------
+//! Transaction - CRUD ---------------------------------------------
 
 app.get('/api/transaction', getTransaction)
 //! formToBody needs to be used in conjunction with multer to send form data correctly
-app.post('/api/transaction', formToBody.none(), auth, createTransaction);
-app.put('/api/transaction', auth, updateTransaction);
-app.delete('/api/transaction', auth, deleteTransaction);
+app.post('/api/transaction', formToBody.none(), createTransaction);
+app.put('/api/transaction', updateTransaction);
+app.delete('/api/transaction', deleteTransaction);
 
 
 
-//! User - CRUD -------------------------------------------------------------------------------------
+//! User - CRUD ---------------------------------------------------
 
 app.post('/api/login', formToBody.none(), encrypt, loginUser)
 app.post('/api/register', upload.single('image'), encrypt, registerUser);
@@ -54,7 +54,7 @@ app.get('/api/user', baseUser, (req, res) => {
     // Do something with the parsed data
     const data = req.body;
 
-    // Return aresponse accordingly 
+    // Return a response accordingly 
     res.json({ success: true });
 })
 

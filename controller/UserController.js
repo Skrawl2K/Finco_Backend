@@ -24,15 +24,6 @@ export const loginUser = async (req, res) => {
         res.status(200).end()
     }
 
-    //! Possible source of the login error
-    //Verify the Token 
-    const decoded = verifyToken(token)
-    if (decoded) {
-        res.status(200).end()
-    }
-    else {
-        res.status(401).end();
-    }
 }
 
 //! USER - SIGNUP - POST
