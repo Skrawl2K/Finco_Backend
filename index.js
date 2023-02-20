@@ -38,9 +38,9 @@ app.use('/public', express.static('./public'))
 
 app.get('/api/transaction', getTransaction)
 //! formToBody needs to be used in conjunction with multer to send form data correctly
-app.post('/api/transaction', formToBody.none(), createTransaction);
-app.put('/api/transaction', updateTransaction);
-app.delete('/api/transaction', deleteTransaction);
+app.post('/api/transaction', formToBody.none(), auth, createTransaction);
+app.put('/api/transaction', auth, updateTransaction);
+app.delete('/api/transaction', auth, deleteTransaction);
 
 
 
